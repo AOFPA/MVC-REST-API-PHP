@@ -9,6 +9,7 @@ class UserController extends Controller
 {
         private $db; 
         private $result; 
+        public $id; 
         public $fname; 
         public $lname;
 
@@ -43,6 +44,24 @@ class UserController extends Controller
                 $userModel->fname = $this->fname ;
                 $userModel->lname = $this->lname ;
                 $this->result = $userModel->insert();
+            }catch(PDOException $e){
+                $this->result = false; 
+            }
+            return $this->result ;
+        }
+
+        
+        public function updateUser()
+        {
+            $this->result = null; 
+            
+            try{
+                $userModel = new UserModel($this->db);
+                $userModel->id = $this->id ;
+                $userModel->fname = $this->fname ;
+                $userModel->lname = $this->lname ;
+                $this->result = $userModel->update();
+                
             }catch(PDOException $e){
                 $this->result = false; 
             }

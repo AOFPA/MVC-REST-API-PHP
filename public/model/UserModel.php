@@ -6,6 +6,7 @@ class UserModel
 
     private $conn ; 
     private $table = 'users' ;
+    public $id ;
     public $fname ;
     public $lname ;
 
@@ -34,27 +35,46 @@ class UserModel
 
 
     public function insert()
-        {
-            $table = $this->table ;
-            try{
-                $sql = "INSERT INTO $table (`fname`, `lname`) VALUES (?,?)";
-                $stmt = $this->conn->prepare($sql);
-                $stmt->bindParam(1,$this->fname);
-                $stmt->bindParam(2,$this->lname);
-                if($stmt->execute()){
-                    return true ;
-                }else{
-                    return false ;
-                }
-            }catch(PDOException $e){
+    {
+        $table = $this->table ;
+        try{
+            $sql = "INSERT INTO $table (`fname`, `lname`) VALUES (?,?)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(1,$this->fname);
+            $stmt->bindParam(2,$this->lname);
+            if($stmt->execute()){
+                return true ;
+            }else{
                 return false ;
             }
+        }catch(PDOException $e){
+            return false ;
         }
+    }
+
+
+
+    public function update()
+    {
+        $table = $this->table ;
+        try{
+            $sql = "UPDATE $table SET `fname`=?,`lname`=? WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(1,$this->fname);
+            $stmt->bindParam(2,$this->lname);
+            $stmt->bindParam(3,$this->id);
+            if($stmt->execute()){
+                return true ;
+            }else{
+                return false ;
+            }
+        }catch(PDOException $e){
+            return false ;
+        }
+    }
 
 
 
 
     
 }
-
-?>
