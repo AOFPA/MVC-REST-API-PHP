@@ -15,12 +15,12 @@ $router->map( 'POST', '/api/v1/user/create', function() {
 });
 
 //modify user
-$router->map( 'POST', '/api/v1/user/update', function() {
+$router->map( 'POST', '/api/v1/user/[i:id]/update', function( $id ) {
 	require __DIR__ . '/api/user/update.php';
 });
 
 //delete user
-$router->map( 'POST', '/api/v1/user/delete', function() {
+$router->map( 'POST', '/api/v1/user/[i:id]/delete', function( $id ) {
 	require __DIR__ . '/api/user/delete.php';
 });
 

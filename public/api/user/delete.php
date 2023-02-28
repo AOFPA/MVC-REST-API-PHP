@@ -11,7 +11,7 @@ require_once($CONTROLLER_PATH . '/User/UserController.php');
 $userController = new UserController();
 
 $params = array();
-$params['id'] = isset($_POST['id']) && !empty($_POST['id']) ? $_POST['id'] : "" ;
+$params['id'] = isset($id) && !empty($id) ? $id : "" ;
 
 $data = json_encode($params);
 $data = json_decode($data);
