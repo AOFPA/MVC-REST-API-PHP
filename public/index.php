@@ -22,6 +22,10 @@ $router->map( 'POST', '/api/v1/user/delete', function() {
 });
 
 
+$router->map( 'GET', '/api/v1/user/[i:id]', function( $id ) {
+	require __DIR__ . '/api/user/get_by_id.php';
+});
+
 
 $match = $router->match();
 

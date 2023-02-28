@@ -33,6 +33,21 @@ class UserModel
         }
     }
 
+    public function getById()
+    {
+        $table = $this->table ;
+        try{
+            $sql = "SELECT * FROM $table WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(1,$this->id);
+            $stmt->execute();
+            return $stmt ;
+
+        }catch(PDOException $e){
+            return false ;
+        }
+    }
+
 
     public function insert()
     {

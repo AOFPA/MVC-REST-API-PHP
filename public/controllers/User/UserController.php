@@ -68,6 +68,22 @@ class UserController extends Controller
             return $this->result ;
         }
 
+
+        public function getUserById()
+        {
+            $this->result = null; 
+            
+            try{
+                $userModel = new UserModel($this->db);
+                $userModel->id = $this->id ;
+                $this->result = $userModel->getById();
+                
+            }catch(PDOException $e){
+                $this->result = false; 
+            }
+            return $this->result ;
+        }
+
         
         public function deleteUser()
         {
