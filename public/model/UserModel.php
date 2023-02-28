@@ -1,0 +1,60 @@
+<?php
+
+class UserModel
+{
+
+
+    private $conn ; 
+    private $table = 'users' ;
+    public $fname ;
+    public $lname ;
+
+
+    
+    public function __construct($db)
+    {
+        $this->conn = $db ;
+    }
+
+
+
+    public function getAll()
+    {
+        $table = $this->table ;
+        try{
+            $sql = "SELECT * FROM $table";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            return $stmt ;
+
+        }catch(PDOException $e){
+            return false ;
+        }
+    }
+
+
+    public function insert()
+        {
+            $table = $this->table ;
+            try{
+                $sql = "INSERT INTO $table (`fname`, `lname`) VALUES (?,?)";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bindParam(1,$this->fname);
+                $stmt->bindParam(2,$this->lname);
+                if($stmt->execute()){
+                    return true ;
+                }else{
+                    return false ;
+                }
+            }catch(PDOException $e){
+                return false ;
+            }
+        }
+
+
+
+
+    
+}
+
+?>
