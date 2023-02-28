@@ -79,7 +79,11 @@ class UserModel
             $stmt->bindParam(2,$this->lname);
             $stmt->bindParam(3,$this->id);
             if($stmt->execute()){
-                return true ;
+                if($stmt->rowCount()){
+                    return true ;
+                }else{
+                    return false ;
+                }
             }else{
                 return false ;
             }
@@ -96,7 +100,11 @@ class UserModel
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(1,$this->id);
             if($stmt->execute()){
-                return true ;
+                if($stmt->rowCount()){
+                    return true ;
+                }else{
+                    return false ;
+                }
             }else{
                 return false ;
             }
