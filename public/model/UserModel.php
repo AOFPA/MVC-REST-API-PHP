@@ -73,6 +73,23 @@ class UserModel
         }
     }
 
+    public function delete()
+    {
+        $table = $this->table ;
+        try{
+            $sql = "DELETE FROM $table WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(1,$this->id);
+            if($stmt->execute()){
+                return true ;
+            }else{
+                return false ;
+            }
+        }catch(PDOException $e){
+            return false ;
+        }
+    }
+
 
 
 

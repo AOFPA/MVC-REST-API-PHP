@@ -17,6 +17,11 @@ $router->map( 'POST', '/api/v1/user/update', function() {
 });
 
 
+$router->map( 'POST', '/api/v1/user/delete', function() {
+	require __DIR__ . '/api/user/delete.php';
+});
+
+
 
 $match = $router->match();
 
