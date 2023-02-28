@@ -1,6 +1,9 @@
 <?php 
-//https://github.com/vlucas/phpdotenv
-// File BSase ของ Controller แต่ละอัน มีหน้าที่ Connect Database
+
+/**
+ * @OA\Info(title="My First API", version="0.1")
+ */
+
 
 
 class Controller

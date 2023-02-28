@@ -23,6 +23,15 @@ class UserController extends Controller
             require_once($MODEL_PATH .  '/model/UserModel.php');
         }
 
+
+        /**
+         * @OA\Get(
+         *     path="/api/v1/user",tags={"User"},description="Read All Users",
+         *     @OA\Response(response="200", description="Success Request"),
+         *     @OA\Response(response="400", description="Bad Request")
+         * )
+         */
+
         public function getUserAll()
         {
             $this->result = null; 
@@ -35,6 +44,46 @@ class UserController extends Controller
             
             return $this->result ;
         }
+
+         /**
+         * @OA\GET(
+         *     path="/api/v1/user/{id}",tags={"User"},description="Read Users By ID",
+         *     @OA\Parameter(
+         *         name="id",
+         *         required=true,
+         *         in="path",
+         *         @OA\Schema(
+         *            type="integer"
+         *         )
+         *     ) ,       
+         *     @OA\Response(response="200", description="Success Request"),
+         *     @OA\Response(response="400", description="Bad Request")
+         * )
+         */
+        public function getUserById()
+        {
+            $this->result = null; 
+            
+            try{
+                $userModel = new UserModel($this->db);
+                $userModel->id = $this->id ;
+                $this->result = $userModel->getById();
+                
+            }catch(PDOException $e){
+                $this->result = false; 
+            }
+            return $this->result ;
+        }
+
+        
+
+         /**
+         * @OA\POST(
+         *     path="/api/v1/user/create",tags={"User"},description="Add Users",
+         *     @OA\Response(response="200", description="Success Request"),
+         *     @OA\Response(response="400", description="Bad Request")
+         * )
+         */
 
         public function createUser()
         {
@@ -50,7 +99,13 @@ class UserController extends Controller
             return $this->result ;
         }
 
-        
+        /**
+         * @OA\POST(
+         *     path="/api/v1/user/{id}/update",tags={"User"},description="Add Users",
+         *     @OA\Response(response="200", description="Success Request"),
+         *     @OA\Response(response="400", description="Bad Request")
+         * )
+         */
         public function updateUser()
         {
             $this->result = null; 
@@ -68,21 +123,7 @@ class UserController extends Controller
             return $this->result ;
         }
 
-
-        public function getUserById()
-        {
-            $this->result = null; 
-            
-            try{
-                $userModel = new UserModel($this->db);
-                $userModel->id = $this->id ;
-                $this->result = $userModel->getById();
-                
-            }catch(PDOException $e){
-                $this->result = false; 
-            }
-            return $this->result ;
-        }
+       
 
         
         public function deleteUser()
