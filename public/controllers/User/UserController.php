@@ -118,7 +118,7 @@ class UserController extends Controller
          * @OA\POST(
          *     path="/api/v1/user/{id}/update",
          *     tags={"User"},
-         *     description="Add Users",
+         *     description="Edit Users",
          *     @OA\Parameter(
          *         name="id",
          *         required=true,
@@ -162,7 +162,7 @@ class UserController extends Controller
          * @OA\POST(
          *     path="/api/v1/user/{id}/delete",
          *     tags={"User"},
-         *     description="Read Users By ID",
+         *     description="Delete User",
          *     @OA\Parameter(
          *         name="id",
          *         required=true,
