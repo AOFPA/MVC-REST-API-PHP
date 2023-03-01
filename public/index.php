@@ -4,11 +4,21 @@ require_once realpath(__DIR__ . "/vendor/autoload.php");
 $router = new Router();
 
 //==============end point================
-//api documentation
+// ##api documentation##
 $router->map( 'GET', '/', function() {
 	header('location:./documentation');
 });
+// ##Auth##
+//get jwt token
+$router->map( 'POST', '/api/v1/auth', function() {
+	require __DIR__ . '/api/auth/auth.php';
+});
+$router->map( 'POST', '/api/v1/register', function() {
+	require __DIR__ . '/api/auth/register.php';
+});
 
+
+// ##User##
 //read all user
 $router->map( 'GET', '/api/v1/user', function() {
 	require __DIR__ . '/api/user/get_all.php';

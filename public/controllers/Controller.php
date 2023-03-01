@@ -12,7 +12,7 @@
 class Controller
 {
     private $db;
-    private $key;
+    public $key;
 
     public function __construct()
     {
