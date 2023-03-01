@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: Feb 28, 2023 at 04:04 AM
+-- Generation Time: Mar 01, 2023 at 09:17 AM
 -- Server version: 8.0.32
 -- PHP Version: 8.1.15
 
@@ -28,19 +28,21 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `users` (
-  `user_id` bigint UNSIGNED NOT NULL,
-  `username` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `user_email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `user_status` int NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` int NOT NULL,
+  `fname` varchar(100) NOT NULL,
+  `lname` varchar(100) NOT NULL,
+  `phone` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `user_email`, `user_status`) VALUES
-(1, 'test1', 'test@gmail.com', 1),
-(2, 'test2', 'test2@gmail.com', 0);
+INSERT INTO `users` (`id`, `fname`, `lname`, `phone`) VALUES
+(1, 'Chokchai555', 'Jamnoi555', '0835323829'),
+(2, 'Koamarudeen', 'bugem', '0899899899'),
+(6, 'John', 'Doe', '0811811811'),
+(7, 'JohnRg', 'DoeRg', '0811811811Rg');
 
 --
 -- Indexes for dumped tables
@@ -50,7 +52,7 @@ INSERT INTO `users` (`user_id`, `username`, `user_email`, `user_status`) VALUES
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -60,7 +62,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
