@@ -12,6 +12,7 @@
 class Controller
 {
     private $db;
+    private $key;
 
     public function __construct()
     {
@@ -35,11 +36,17 @@ class Controller
         );
 
         $this->db = $database->connection();
+        $this->key = $_ENV['JWT_KEY'];
     }
 
     public function connection()
     {
         return $this->db;
+    }
+
+    public function jwtKey()
+    {
+        return $this->key;
     }
 
 }

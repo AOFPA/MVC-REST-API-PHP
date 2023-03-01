@@ -9,7 +9,7 @@ class UserModel
     public $id ;
     public $fname ;
     public $lname ;
-
+    public $phone ;
 
     
     public function __construct($db)
@@ -48,15 +48,31 @@ class UserModel
         }
     }
 
+    public function getByPhone()
+    {
+        $table = $this->table ;
+        try{
+            $sql = "SELECT * FROM $table WHERE phone = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(1,$this->phone);
+            $stmt->execute();
+            return $stmt ;
+
+        }catch(PDOException $e){
+            return false ;
+        }
+    }
+
 
     public function insert()
     {
         $table = $this->table ;
         try{
-            $sql = "INSERT INTO $table (`fname`, `lname`) VALUES (?,?)";
+            $sql = "INSERT INTO $table (`fname`, `lname`,`phone`) VALUES (?,?,?)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(1,$this->fname);
             $stmt->bindParam(2,$this->lname);
+            $stmt->bindParam(3,$this->phone);
             if($stmt->execute()){
                 return true ;
             }else{
@@ -73,11 +89,12 @@ class UserModel
     {
         $table = $this->table ;
         try{
-            $sql = "UPDATE $table SET `fname`=?,`lname`=? WHERE id = ?";
+            $sql = "UPDATE $table SET `fname`=?,`lname`=?, `phone`=? WHERE id = ?";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(1,$this->fname);
             $stmt->bindParam(2,$this->lname);
-            $stmt->bindParam(3,$this->id);
+            $stmt->bindParam(3,$this->phone);
+            $stmt->bindParam(4,$this->id);
             if($stmt->execute()){
                 if($stmt->rowCount()){
                     return true ;

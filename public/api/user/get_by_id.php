@@ -72,7 +72,7 @@ if($data->id == ""){
             $arr['count'] = $resultCount;
             $arr['code'] = 400;
             $arr['status'] = 'error';
-            $arr['message'] = "SQL ERROR";
+            $arr['message'] = "error try again";
     
             echo json_encode($arr);
     }

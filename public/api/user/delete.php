@@ -40,7 +40,7 @@ if($data->id == ""){
         $arr = array();
         $arr['code'] = 204;
         $arr['status'] = 'error';
-        $arr['message'] = "sql error";
+        $arr['message'] = "error try again";
         echo json_encode($arr);
     }
 }

@@ -3,7 +3,12 @@ use AltoRouter as Router;
 require_once realpath(__DIR__ . "/vendor/autoload.php");
 $router = new Router();
 
-//end point
+//==============end point================
+//api documentation
+$router->map( 'GET', '/', function() {
+	header('location:./documentation');
+});
+
 //read all user
 $router->map( 'GET', '/api/v1/user', function() {
 	require __DIR__ . '/api/user/get_all.php';

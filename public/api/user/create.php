@@ -13,12 +13,14 @@ $userController = new UserController();
 $params = array();
 $params['fname'] = isset($_POST['fname']) && !empty($_POST['fname']) ? $_POST['fname'] : "" ;
 $params['lname'] = isset($_POST['lname']) && !empty($_POST['lname']) ? $_POST['lname'] : "" ;
+$params['phone'] = isset($_POST['phone']) && !empty($_POST['phone']) ? $_POST['phone'] : "" ;
 
 $data = json_encode($params);
 $data = json_decode($data);
 
 $userController->fname = $data->fname ;
 $userController->lname = $data->lname ;
+$userController->phone = $data->phone ;
 
 if($data->fname == ""){
     http_response_code(200);
@@ -36,6 +38,14 @@ if($data->fname == ""){
     $arr['message'] = "No lname";
 
     echo json_encode($arr);
+}else if($data->phone == ""){
+    http_response_code(200);
+    $arr = array();
+    $arr['code'] = 204;
+    $arr['status'] = 'error';
+    $arr['message'] = "No phone";
+
+    echo json_encode($arr);
 }else{
     if($userController->createUser()){
         http_response_code(200);
@@ -49,7 +59,7 @@ if($data->fname == ""){
         $arr = array();
         $arr['code'] = 204;
         $arr['status'] = 'error';
-        $arr['message'] = "sql error";
+        $arr['message'] = "error try again";
         echo json_encode($arr);
     }
 }

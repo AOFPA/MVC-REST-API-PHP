@@ -12,6 +12,7 @@ class UserController extends Controller
         public $id; 
         public $fname; 
         public $lname;
+        public $phone;
 
         public function __construct()
         {
@@ -89,9 +90,10 @@ class UserController extends Controller
          *     @OA\RequestBody(
          *         @OA\MediaType(
          *            mediaType="multipart/form-data",
-         *           @OA\Schema(required={"fname","lname"},
+         *           @OA\Schema(required={"fname","lname","phone"},
          *              @OA\Property(property="fname", type="string", example="John"),
-         *              @OA\Property(property="lname", type="string", example="Doe")
+         *              @OA\Property(property="lname", type="string", example="Doe"),
+         *              @OA\Property(property="phone", type="string", example="0811811811")
          *            )
          *         )    
          *     ) ,       
@@ -107,7 +109,21 @@ class UserController extends Controller
                 $userModel = new UserModel($this->db);
                 $userModel->fname = $this->fname ;
                 $userModel->lname = $this->lname ;
-                $this->result = $userModel->insert();
+                $userModel->phone = $this->phone ;
+
+                $stmt = $userModel->getByPhone();
+                if($stmt){
+                    $count = $stmt->rowCount();
+                    if($count == 0){
+                        $this->result = $userModel->insert();
+                    }else{
+                        $this->result = false; 
+                    }
+                }else{
+                    $this->result = false; 
+                }
+
+                
             }catch(PDOException $e){
                 $this->result = false; 
             }
@@ -130,9 +146,10 @@ class UserController extends Controller
          *     @OA\RequestBody(
          *         @OA\MediaType(
          *            mediaType="multipart/form-data",
-         *           @OA\Schema(required={"fname","lname"},
+         *           @OA\Schema(required={"fname","lname","phone"},
          *              @OA\Property(property="fname", type="string", example="John"),
-         *              @OA\Property(property="lname", type="string", example="Doe")
+         *              @OA\Property(property="lname", type="string", example="Doe"),
+         *              @OA\Property(property="phone", type="string", example="0811811811")
          *            )
          *         )    
          *     ) ,   
@@ -149,7 +166,24 @@ class UserController extends Controller
                 $userModel->id = $this->id ;
                 $userModel->fname = $this->fname ;
                 $userModel->lname = $this->lname ;
-                $this->result = $userModel->update();
+                $userModel->phone = $this->phone ;
+
+                $stmt = $userModel->getByPhone();
+                if($stmt){
+                    $count = $stmt->rowCount();
+                    if($count == 0){
+                        $this->result = $userModel->update();
+                    }else{
+                        $rs = $stmt->fetch();
+                        if($rs['id'] == $this->id){
+                            $this->result = $userModel->update();
+                        }else{
+                            $this->result = false;
+                        }
+                    }
+                }else{
+                    $this->result = false; 
+                }       
                 
             }catch(PDOException $e){
                 $this->result = false; 
