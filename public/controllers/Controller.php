@@ -1,7 +1,10 @@
 <?php 
 
 /**
- * @OA\Info(title="My First API", version="0.1")
+ * @OA\Info(
+ *      title="My First API (Chokchai Jamnoi)", 
+ *      version="1.0"
+ * )
  */
 
 

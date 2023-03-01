@@ -26,7 +26,9 @@ class UserController extends Controller
 
         /**
          * @OA\Get(
-         *     path="/api/v1/user",tags={"User"},description="Read All Users",
+         *     path="/api/v1/user",
+         *     tags={"User"},
+         *     description="Read All Users",
          *     @OA\Response(response="200", description="Success Request"),
          *     @OA\Response(response="400", description="Bad Request")
          * )
@@ -47,7 +49,9 @@ class UserController extends Controller
 
          /**
          * @OA\GET(
-         *     path="/api/v1/user/{id}",tags={"User"},description="Read Users By ID",
+         *     path="/api/v1/user/{id}",
+         *     tags={"User"},
+         *     description="Read Users By ID",
          *     @OA\Parameter(
          *         name="id",
          *         required=true,
@@ -79,7 +83,18 @@ class UserController extends Controller
 
          /**
          * @OA\POST(
-         *     path="/api/v1/user/create",tags={"User"},description="Add Users",
+         *     path="/api/v1/user/create",
+         *     tags={"User"},
+         *     description="Add Users",
+         *     @OA\RequestBody(
+         *         @OA\MediaType(
+         *            mediaType="multipart/form-data",
+         *           @OA\Schema(required={"fname","lname"},
+         *              @OA\Property(property="fname", type="string", example="John"),
+         *              @OA\Property(property="lname", type="string", example="Doe")
+         *            )
+         *         )    
+         *     ) ,       
          *     @OA\Response(response="200", description="Success Request"),
          *     @OA\Response(response="400", description="Bad Request")
          * )
@@ -101,7 +116,26 @@ class UserController extends Controller
 
         /**
          * @OA\POST(
-         *     path="/api/v1/user/{id}/update",tags={"User"},description="Add Users",
+         *     path="/api/v1/user/{id}/update",
+         *     tags={"User"},
+         *     description="Add Users",
+         *     @OA\Parameter(
+         *         name="id",
+         *         required=true,
+         *         in="path",
+         *         @OA\Schema(
+         *            type="integer"
+         *         )
+         *     ) , 
+         *     @OA\RequestBody(
+         *         @OA\MediaType(
+         *            mediaType="multipart/form-data",
+         *           @OA\Schema(required={"fname","lname"},
+         *              @OA\Property(property="fname", type="string", example="John"),
+         *              @OA\Property(property="lname", type="string", example="Doe")
+         *            )
+         *         )    
+         *     ) ,   
          *     @OA\Response(response="200", description="Success Request"),
          *     @OA\Response(response="400", description="Bad Request")
          * )
@@ -124,7 +158,23 @@ class UserController extends Controller
         }
 
        
-
+        /**
+         * @OA\POST(
+         *     path="/api/v1/user/{id}/delete",
+         *     tags={"User"},
+         *     description="Read Users By ID",
+         *     @OA\Parameter(
+         *         name="id",
+         *         required=true,
+         *         in="path",
+         *         @OA\Schema(
+         *            type="integer"
+         *         )
+         *     ) ,       
+         *     @OA\Response(response="200", description="Success Request"),
+         *     @OA\Response(response="400", description="Bad Request")
+         * )
+         */
         
         public function deleteUser()
         {
