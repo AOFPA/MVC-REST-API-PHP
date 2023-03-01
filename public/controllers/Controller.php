@@ -5,6 +5,15 @@
  *      title="My First API (Chokchai Jamnoi)", 
  *      version="1.0"
  * )
+ * @OA\Schemes(format="http")
+ * @OA\SecurityScheme(
+ *      securityScheme="bearerAuth",
+ *      in="header",
+ *      name="Authorization",
+ *      type="http",
+ *      scheme="Bearer",
+ *      bearerFormat="JWT",
+ * ),
  */
 
 
