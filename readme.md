@@ -1,5 +1,5 @@
 documentation
-![alt text for screen readers](/img/doc.png "doc.png")
+![alt text for screen readers](/img/document.png "doc.png")
 
 fix : enable rewrite htaccess on apache2
 
