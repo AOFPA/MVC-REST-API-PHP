@@ -4,6 +4,14 @@ $CONTROLLER_PATH = str_replace("/User", "" , __DIR__);
 //C:\xampp\htdocs\php-api
 require_once($CONTROLLER_PATH . '/Controller.php');
 
+//เรียกใช้ autoLoad 
+$ROOT_PATH = str_replace("controllers/User" , "" , __DIR__);
+require_once($ROOT_PATH . "/vendor/autoload.php");
+
+// use JWT
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 
 class UserController extends Controller
 {
@@ -14,11 +22,14 @@ class UserController extends Controller
         public $lname;
         public $phone;
 
+        private $key ;
+
         public function __construct()
         {
             //connect to database
             parent::__construct();
             $this->db = $this->connection();
+            $this->key = $this->jwtKey();
             //call model
             $MODEL_PATH = str_replace("/controllers/User" , "" , __DIR__);
             require_once($MODEL_PATH .  '/model/UserModel.php');
@@ -31,19 +42,32 @@ class UserController extends Controller
          *     tags={"User"},
          *     description="Read All Users",
          *     @OA\Response(response="200", description="Success Request"),
-         *     @OA\Response(response="400", description="Bad Request")
+         *     @OA\Response(response="400", description="Bad Request"),
+         *     security={{ "bearerAuth":{} }}
          * )
          */
 
         public function getUserAll()
         {
+            $header = apache_request_headers(); //รับ auth header
+
+
             $this->result = null; 
-            try{
-                $userModel = new UserModel($this->db);
-                $this->result = $userModel->getAll();
-            }catch(PDOException $e){
+
+            if($header["Authorization"]){
+                $token = str_replace('Bearer ' , '' , $header["Authorization"]);
+                try{
+                    $token = JWT::decode($token,new Key($this->key , 'HS256'));
+                    $userModel = new UserModel($this->db);
+                    $this->result = $userModel->getAll();
+                }catch(PDOException $e){
+                    $this->result = false ;
+                }
+            }else{
                 $this->result = false ;
             }
+
+            
             
             return $this->result ;
         }
@@ -62,21 +86,31 @@ class UserController extends Controller
          *         )
          *     ) ,       
          *     @OA\Response(response="200", description="Success Request"),
-         *     @OA\Response(response="400", description="Bad Request")
+         *     @OA\Response(response="400", description="Bad Request"),
+         *     security={{ "bearerAuth":{} }}
+         * 
          * )
          */
         public function getUserById()
         {
+            $header = apache_request_headers(); //รับ auth header
             $this->result = null; 
             
-            try{
-                $userModel = new UserModel($this->db);
-                $userModel->id = $this->id ;
-                $this->result = $userModel->getById();
-                
-            }catch(PDOException $e){
+            if($header["Authorization"]){
+                $token = str_replace('Bearer ' , '' , $header["Authorization"]);
+                try{
+                    $token = JWT::decode($token,new Key($this->key , 'HS256'));
+                    $userModel = new UserModel($this->db);
+                    $userModel->id = $this->id ;
+                    $this->result = $userModel->getById();
+                    
+                }catch(PDOException $e){
+                    $this->result = false; 
+                }
+            }else{
                 $this->result = false; 
             }
+            
             return $this->result ;
         }
 
@@ -98,35 +132,45 @@ class UserController extends Controller
          *         )    
          *     ) ,       
          *     @OA\Response(response="200", description="Success Request"),
-         *     @OA\Response(response="400", description="Bad Request")
+         *     @OA\Response(response="400", description="Bad Request"),
+         *     security={{ "bearerAuth":{} }}
          * )
          */
 
         public function createUser()
         {
+            $header = apache_request_headers(); //รับ auth header
             $this->result = null; 
-            try{
-                $userModel = new UserModel($this->db);
-                $userModel->fname = $this->fname ;
-                $userModel->lname = $this->lname ;
-                $userModel->phone = $this->phone ;
 
-                $stmt = $userModel->getByPhone();
-                if($stmt){
-                    $count = $stmt->rowCount();
-                    if($count == 0){
-                        $this->result = $userModel->insert();
+            if($header["Authorization"]){
+                $token = str_replace('Bearer ' , '' , $header["Authorization"]);
+                try{
+                    $token = JWT::decode($token,new Key($this->key , 'HS256'));
+                    $userModel = new UserModel($this->db);
+                    $userModel->fname = $this->fname ;
+                    $userModel->lname = $this->lname ;
+                    $userModel->phone = $this->phone ;
+    
+                    $stmt = $userModel->getByPhone();
+                    if($stmt){
+                        $count = $stmt->rowCount();
+                        if($count == 0){
+                            $this->result = $userModel->insert();
+                        }else{
+                            $this->result = false; 
+                        }
                     }else{
                         $this->result = false; 
                     }
-                }else{
+    
+                    
+                }catch(PDOException $e){
                     $this->result = false; 
                 }
-
-                
-            }catch(PDOException $e){
+            }else{
                 $this->result = false; 
             }
+            
             return $this->result ;
         }
 
@@ -154,40 +198,49 @@ class UserController extends Controller
          *         )    
          *     ) ,   
          *     @OA\Response(response="200", description="Success Request"),
-         *     @OA\Response(response="400", description="Bad Request")
+         *     @OA\Response(response="400", description="Bad Request"),
+         *     security={{ "bearerAuth":{} }}
          * )
          */
         public function updateUser()
         {
+            $header = apache_request_headers(); //รับ auth header
             $this->result = null; 
-            
-            try{
-                $userModel = new UserModel($this->db);
-                $userModel->id = $this->id ;
-                $userModel->fname = $this->fname ;
-                $userModel->lname = $this->lname ;
-                $userModel->phone = $this->phone ;
-
-                $stmt = $userModel->getByPhone();
-                if($stmt){
-                    $count = $stmt->rowCount();
-                    if($count == 0){
-                        $this->result = $userModel->update();
-                    }else{
-                        $rs = $stmt->fetch();
-                        if($rs['id'] == $this->id){
+            if($header["Authorization"]){
+                $token = str_replace('Bearer ' , '' , $header["Authorization"]);
+                try{
+                    $token = JWT::decode($token,new Key($this->key , 'HS256'));
+                
+                    $userModel = new UserModel($this->db);
+                    $userModel->id = $this->id ;
+                    $userModel->fname = $this->fname ;
+                    $userModel->lname = $this->lname ;
+                    $userModel->phone = $this->phone ;
+    
+                    $stmt = $userModel->getByPhone();
+                    if($stmt){
+                        $count = $stmt->rowCount();
+                        if($count == 0){
                             $this->result = $userModel->update();
                         }else{
-                            $this->result = false;
+                            $rs = $stmt->fetch();
+                            if($rs['id'] == $this->id){
+                                $this->result = $userModel->update();
+                            }else{
+                                $this->result = false;
+                            }
                         }
-                    }
-                }else{
+                    }else{
+                        $this->result = false; 
+                    }       
+                    
+                }catch(PDOException $e){
                     $this->result = false; 
-                }       
-                
-            }catch(PDOException $e){
+                }
+            }else{
                 $this->result = false; 
             }
+           
             return $this->result ;
         }
 
@@ -206,22 +259,30 @@ class UserController extends Controller
          *         )
          *     ) ,       
          *     @OA\Response(response="200", description="Success Request"),
-         *     @OA\Response(response="400", description="Bad Request")
+         *     @OA\Response(response="400", description="Bad Request"),
+         *     security={{ "bearerAuth":{} }}
          * )
          */
         
         public function deleteUser()
         {
+            $header = apache_request_headers(); //รับ auth header
             $this->result = null; 
-            
-            try{
-                $userModel = new UserModel($this->db);
-                $userModel->id = $this->id ;
-                $this->result = $userModel->delete();
-                
-            }catch(PDOException $e){
+            if($header["Authorization"]){
+                $token = str_replace('Bearer ' , '' , $header["Authorization"]);
+                try{
+                    $token = JWT::decode($token,new Key($this->key , 'HS256'));
+                    $userModel = new UserModel($this->db);
+                    $userModel->id = $this->id ;
+                    $this->result = $userModel->delete();
+                    
+                }catch(PDOException $e){
+                    $this->result = false; 
+                }
+            }else{
                 $this->result = false; 
             }
+            
             return $this->result ;
         }
 

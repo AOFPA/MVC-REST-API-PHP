@@ -21,7 +21,7 @@
 class Controller
 {
     private $db;
-    public $key;
+    private $key;
 
     public function __construct()
     {
