@@ -1,5 +1,4 @@
 <?php 
-
 $CONTROLLER_PATH = str_replace("/User", "" , __DIR__);
 //C:\xampp\htdocs\php-api
 require_once($CONTROLLER_PATH . '/Controller.php');

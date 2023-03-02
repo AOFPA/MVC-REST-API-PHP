@@ -3,7 +3,6 @@
 $CONTROLLER_PATH = str_replace("/Auth", "" , __DIR__);
 require_once($CONTROLLER_PATH . '/Controller.php');
 
-
 //เรียกใช้ autoLoad 
 $ROOT_PATH = str_replace("controllers/Auth" , "" , __DIR__);
 require_once($ROOT_PATH . "/vendor/autoload.php");
@@ -12,14 +11,12 @@ require_once($ROOT_PATH . "/vendor/autoload.php");
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-
 class AuthController extends Controller
 {
     private $db;
     private $result ;
     
     public $key;
-    
     public $phone;
     public $fname;
     public $lname;
